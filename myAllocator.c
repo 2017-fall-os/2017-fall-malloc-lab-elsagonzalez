@@ -198,7 +198,7 @@ BlockPrefix_t *findNextFit(size_t s) {	/* find block with usable space > s start
   do {
     if (!p->allocated && computeUsableSpace(p) >= s){
       nextP = p;
-      return getNextPrefix(p);
+      return p;
     }
     p = getNextPrefix(p);
     if(!p){
