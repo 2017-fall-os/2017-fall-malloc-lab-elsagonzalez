@@ -201,10 +201,10 @@ BlockPrefix_t *findNextFit(size_t s) {	/* find block with usable space > s start
       return p;
     }
     p = getNextPrefix(p);
-    if(!p){
+    if(!p){ //start at beggining if reached end of memory
       p = arenaBegin;
     }
-  } while(p != nextP);
+  } while(p != nextP); //stop iterating when goes back to where it started
   return growArena(s);
 }
 
@@ -299,9 +299,9 @@ void *resizeRegion(void *r, size_t newSize) {
   //TODO HERE
   BlockPrefix_t * successor = getNextPrefix(regionToPrefix(r));
   if(successor){
-    if((oldSize + computeUsableSpace(successor) + prefixSize + suffixSize) >= newSize){ //usable size of r & s combined
+    if((oldSize + computeUsableSpace(successor) + prefixSize + suffixSize) >= newSize){ //usable size of r & s combined > newSize
       BlockPrefix_t * p = regionToPrefix(r);
-      BlockSuffix_t * s = getNextPrefix(regionToPrefix(r))->suffix;
+      BlockSuffix_t * s = successor->suffix;
       p->suffix = s;
       s->prefix = p->suffix->prefix;
       return prefixToRegion(p);
